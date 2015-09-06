@@ -27,18 +27,16 @@ def main():
 
     myDict = {}
     i = 0
-    def f(ob, tag):
-        return ob.find(tag).text
-
     for item in items:
-        # store in dict
+        f = lambda tag: item.find(tag).text
+        # store each item as dict
         myDict[i] = {
-            'title': f(item, 'title'),
-            'description': f(item, 'description'),
-            'link': f(item, 'link'),
-            'guid': f(item, 'guid'),
-            # 'isPermaLink': f(item, 'isPermaLink'),
-            'pubDate': f(item, 'pubDate')
+            'title': f('title'),
+            'description': f('description'),
+            'link': f('link'),
+            'guid': f('guid'),
+            'isPermaLink': item.find('guid').get('isPermaLink'),
+            'pubDate': f('pubDate')
         }
         i += 1
 
