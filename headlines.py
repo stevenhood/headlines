@@ -50,9 +50,8 @@ def main():
         type=str, default='',
         help='File to write output json string')
     args = ap.parse_args()
-    url = (args.url or URL_DEFAULT)
 
-    jsonStr = execute(url)
+    jsonStr = execute(args.url)
     if args.file != '':
         f = open(args.file, 'w')
         f.write(jsonStr)
