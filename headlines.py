@@ -39,7 +39,16 @@ def execute(url):
         }
         i += 1
 
-    return json.dumps(myDict)
+    return myDict
+
+def output(myDict):
+    i = 0
+    for key in myDict.keys():
+        print 'headline', i
+        for x in myDict[key].keys():
+            print x, myDict[key][x]
+        print ""
+        i += 1
 
 def main():
     ap = ArgumentParser()
@@ -49,9 +58,16 @@ def main():
     ap.add_argument('-f', '--file',
         type=str, default='',
         help='File to write output json string')
+    ap.add_argument('-v', '--verbose',
+        default=False, action='store_true',
+        help='Print parsed headlines')
     args = ap.parse_args()
 
-    jsonStr = execute(args.url)
+    headlinesDict = execute(args.url)
+    if args.verbose:
+        output(headlinesDict)
+
+    jsonStr = json.dumps(headlinesDict)
     if args.file != '':
         f = open(args.file, 'w')
         f.write(jsonStr)
