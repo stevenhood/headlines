@@ -1,4 +1,5 @@
 import urllib
+import json
 import xml.etree.ElementTree as ET
 
 URL_SOURCE = 'http://feeds.bbci.co.uk/news/rss.xml'
@@ -23,21 +24,28 @@ def main():
     for child in channel:
         if child.tag == 'item':
             items.append(child)
-            # print child.tag, child.attrib
 
-    # print headlines
+    myDict = {}
+    i = 0
+    def f(ob, tag):
+        return ob.find(tag).text
+
     for item in items:
-        try:
-            print item.find('title').text
-            print item.find('description').text
-            print item.find('link').text
-            print item.find('guid').text
-            print item.find('guid').get('isPermaLink')
-            print item.find('pubDate').text
-        except Exception as e:
-            print "[Exception: Failed to encode]"
-        finally:
-            print ""
+        # store in dict
+        myDict[i] = {
+            'title': f(item, 'title'),
+            'description': f(item, 'description'),
+            'link': f(item, 'link'),
+            'guid': f(item, 'guid'),
+            # 'isPermaLink': f(item, 'isPermaLink'),
+            'pubDate': f(item, 'pubDate')
+        }
+        i += 1
+
+    # for key in myDict.keys():
+    #     print key, myDict[key]
+
+    print json.dumps(myDict)
 
 if __name__ == '__main__':
     #print get(URL_SOURCE)
