@@ -1,8 +1,9 @@
 import urllib
 import json
 import xml.etree.ElementTree as ET
+from argparse import ArgumentParser
 
-URL_SOURCE = 'http://feeds.bbci.co.uk/news/rss.xml'
+URL_DEFAULT = 'http://feeds.bbci.co.uk/news/rss.xml'
 
 def get(url):
     u = urllib.urlopen(url)
@@ -13,12 +14,10 @@ def parse(xml):
     root = ET.fromstring(xml)
     return root
 
-def main():
-    data = get(URL_SOURCE)
+def execute(url):
+    data = get(url)
     root = parse(data)
     channel = root[0]
-    # print data
-
     # build up list of headline items
     items = []
     for child in channel:
@@ -40,11 +39,26 @@ def main():
         }
         i += 1
 
-    # for key in myDict.keys():
-    #     print key, myDict[key]
+    return json.dumps(myDict)
 
-    print json.dumps(myDict)
+def main():
+    ap = ArgumentParser()
+    ap.add_argument('-u', '--url',
+        type=str, default=URL_DEFAULT,
+        help='URL to RSS XML')
+    ap.add_argument('-f', '--file',
+        type=str, default='',
+        help='File to write output json string')
+    args = ap.parse_args()
+    url = (args.url or URL_DEFAULT)
+
+    jsonStr = execute(url)
+    if args.file != '':
+        f = open(args.file, 'w')
+        f.write(jsonStr)
+        f.close()
+    else:
+        print jsonStr
 
 if __name__ == '__main__':
-    #print get(URL_SOURCE)
     main()
