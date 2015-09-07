@@ -27,15 +27,15 @@ def execute(url):
     myDict = {}
     i = 0
     for item in items:
-        f = lambda tag: item.find(tag).text
+        f = lambda tag: item.find(tag)
         # store each item as dict
         myDict[i] = {
-            'title': f('title'),
-            'description': f('description'),
-            'link': f('link'),
-            'guid': f('guid'),
-            'isPermaLink': item.find('guid').get('isPermaLink'),
-            'pubDate': f('pubDate')
+            'title': f('title').text,
+            'description': f('description').text,
+            'link': f('link').text,
+            'guid': f('guid').text,
+            'isPermaLink': bool(f('guid').get('isPermaLink')),
+            'pubDate': f('pubDate').text
         }
         i += 1
 
