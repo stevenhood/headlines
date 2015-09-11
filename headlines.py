@@ -1,4 +1,4 @@
-import urllib
+import urllib.request
 import json
 import xml.etree.ElementTree as ET
 from argparse import ArgumentParser
@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 URL_DEFAULT = 'http://feeds.bbci.co.uk/news/rss.xml'
 
 def get(url):
-    u = urllib.urlopen(url)
+    u = urllib.request.urlopen(url)
     data = u.read()
     return data
 
@@ -44,10 +44,10 @@ def execute(url):
 def output(myDict):
     i = 0
     for key in myDict.keys():
-        print 'headline', i
+        print('headline', i)
         for x in myDict[key].keys():
-            print x, myDict[key][x]
-        print ""
+            print(x, myDict[key][x])
+        print('')
         i += 1
 
 def main():
@@ -73,7 +73,7 @@ def main():
         f.write(jsonStr)
         f.close()
     else:
-        print jsonStr
+        print(jsonStr)
 
 if __name__ == '__main__':
     main()
